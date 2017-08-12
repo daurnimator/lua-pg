@@ -18,11 +18,11 @@ local function new_lib(pgpsql_library)
 end
 
 function lib:connectdb(c)
-	local pg = self.pgsql.connectdb(c or "") -- default to empty connection string
-	if pg:status() ~= self.pgsql.CONNECTION_OK then
-		return nil, pg:errorMessage()
+	local conn = self.pgsql.connectdb(c or "") -- default to empty connection string
+	if conn:status() ~= self.pgsql.CONNECTION_OK then
+		return nil, conn:errorMessage(), conn:status()
 	end
-	return pg_connection.new(self.pgsql, pg)
+	return pg_connection.new(self.pgsql, conn)
 end
 
 -- Hack around https://github.com/arcapos/luapgsql/issues/45
